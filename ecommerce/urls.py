@@ -19,8 +19,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 #Admin page Title and Header
-admin.site.site_header = 'Admin Section'
-admin.site.index_title = 'Admin'
+admin.site.site_header = 'Wol Arts'
+admin.site.index_title = 'Admin Section'
 
 urlpatterns = [
     path('admin/', admin.site.urls),

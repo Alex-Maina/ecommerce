@@ -5,14 +5,14 @@ from django.contrib.auth.models import User
 
 #customer model
 class Customer(models.Model):
-    #user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=200, null=True)
     last_name = models.CharField(max_length=200, null=True)
     email = models.CharField(max_length=200)
     phone = models.CharField(max_length=255)
     
     def __str__(self):
-        return self.name
+        return self.first_name
 
 #promotion model
 class Promotion(models.Model):
