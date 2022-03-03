@@ -14,7 +14,31 @@ updateButtons[i].addEventListener('click', function(){
     if (user == 'AnonymousUser'){
         console.log('User is not logged in')
     }else{
-        console.log('User is logged in')
+        updateUserOrder(productId, action)
     }
 })
+}
+
+//triggered when the user is logged in
+function updateUserOrder(productId, action){
+	console.log('User is authenticated, sending data...')
+
+		var url = '/update_item/'
+
+        //sends post request to the updateItem view (uses fetch API)
+		fetch(url, {
+			method:'POST',
+			headers:{
+				'Content-Type':'application/json',
+				'X-CSRFToken':csrftoken,
+			}, 
+			body:JSON.stringify({'productId':productId, 'action':action})
+		})
+		.then((response) => {
+		   return response.json();
+		})
+		.then((data) => {
+		    console.log('Data:', data)
+			location.reload()
+		});
 }
