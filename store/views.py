@@ -3,6 +3,7 @@ from .models import *
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse 
 import json 
+import datetime
 
 def store(request):
     if request.user.is_authenticated:
@@ -74,3 +75,29 @@ def updateItem (request):
         orderItem.delete()
     
     return JsonResponse('Item was added', safe=False)
+
+def processOrder (request):
+    transaction_id = datetime.datetime.now().timestamp()
+    data = json.loads(request.body)
+    
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        total=float(data['from']['total'])
+        order.transaction_id = transaction_id
+        
+        if total == order.get_cart_total:
+            order.complete = True
+            order.save()
+            
+        ShippingAddress.objects.create(
+            customer=customer,
+            order=order,
+            address=data['address'],
+        )
+        
+        
+    else:
+        print("Customer is not logged in")
+    
+    return JsonResponse ('Payment Complete!', safe=False)
